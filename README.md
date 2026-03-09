@@ -9,6 +9,10 @@ A complete Retrieval-Augmented Generation system for querying PDF documents usin
 
 ---
 
+![Frontend](Frontend.png)
+
+---
+
 ## Project Structure
 
 ```
