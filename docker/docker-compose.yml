@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  rag-api:
+    build:
+      context: ..         # project root
+      dockerfile: docker/Dockerfile
+    container_name: pdf-rag-system
+    ports:
+      - "8000:8000"
+    volumes:
+      # ChromaDB data persists between restarts
+      - chroma_data:/app/chroma_db
+      # Mount .env file
+      - ../.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 3
+
+volumes:
+  chroma_data:
+    driver: local
